@@ -61,15 +61,17 @@ base_chain = ChatPromptTemplate.from_template(
 ) | llm | StrOutputParser()
 
 # 用 RunnableParallel 并行跑三个主题
+# 关键：itemgetter 从外层 dict 中取出各分支自己的数据，再传给 base_chain
 from langchain_core.runnables import RunnableParallel
+from operator import itemgetter
 
 parallel_chain = RunnableParallel(
-    langchain=base_chain,  # ← 键名 langchain → 主题 "LangChain"
-    docker=base_chain,     # ← 键名 docker   → 主题 "Docker"
-    kubernetes=base_chain, # ← 键名 kubernetes → 主题 "Kubernetes"
+    langchain=itemgetter("langchain") | base_chain,
+    docker=itemgetter("docker") | base_chain,
+    kubernetes=itemgetter("kubernetes") | base_chain,
 )
 
-# 一次性传入所有主题
+# 一次性传入所有主题（外层 key → 内层 {topic: ...}）
 results = parallel_chain.invoke({
     "langchain": {"topic": "LangChain"},
     "docker": {"topic": "Docker"},

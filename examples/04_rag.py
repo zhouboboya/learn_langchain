@@ -18,21 +18,13 @@ RAG 是 LangChain 最实用的场景，核心流程四步走：
 ═══════════════════════════════════════════════════════════════════
 """
 
-import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-
-# ────────────────────────────────────────
-# 注意：DeepSeek 没有 Embedding API
-# ────────────────────────────────────────
-# 文本向量化使用免费的本地模型（sentence-transformers）
-# 如果你有 OpenAI Key，也可以改用 OpenAIEmbeddings
-from langchain_huggingface import HuggingFaceEmbeddings
 
 # ────────────────────────────────────────
 # 第 1 步：准备"知识库"（模拟文档）
@@ -73,11 +65,8 @@ print(f"【切片完成】共 {len(chunks)} 个片段\n")
 # Chroma 是轻量级向量数据库，数据存在内存中，学习最方便
 from langchain_chroma import Chroma
 
-# 创建嵌入模型（本地免费，无需 API Key）
-# 首次运行会下载模型文件（约 100MB），之后使用本地缓存
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
+# 创建嵌入模型（负责把文字转为向量）
+embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
 # 把所有文档片段向量化后存入 Chroma
 vectorstore = Chroma.from_documents(
@@ -110,12 +99,7 @@ rag_prompt = ChatPromptTemplate.from_template("""\
 
 回答：""")
 
-llm = ChatOpenAI(
-    model="deepseek-chat",
-    temperature=0,
-    base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
-    api_key=os.getenv("DEEPSEEK_API_KEY"),
-)
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 # 构建 RAG 链
 # RunnablePassthrough() 意思是"原样透传"——把用户问题原封不动传给 {question}
