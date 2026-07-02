@@ -58,6 +58,27 @@ python3 01_hello_world.py
 | 08 | [08_streaming.py](examples/08_streaming.py) | 流式输出——像打字一样逐字返回 | ⭐⭐ |
 | 09 | [09_document_loader.py](examples/09_document_loader.py) | 文档加载——读 PDF、网页、TXT | ⭐ |
 | 10 | [10_sql_chain.py](examples/10_sql_chain.py) | SQL 查询——用自然语言查数据库 | ⭐⭐⭐ |
+| 11 | [11_sql_ddl.py](examples/11_sql_ddl.py) | 手写 DDL ——不连数据库也能生成 SQL | ⭐⭐ |
+
+### 技巧篇
+
+| 编号 | 文件 | 学什么 | 难度 |
+|------|------|--------|------|
+| 12 | [12_few_shot.py](examples/12_few_shot.py) | Few-shot ——给 LLM 看范例再提问 | ⭐⭐ |
+| 13 | [13_callback.py](examples/13_callback.py) | 回调监控——Token 用量 / 耗时 / 费用追踪 | ⭐⭐ |
+| 14 | [14_fallback.py](examples/14_fallback.py) | 容错机制——Fallback 降级 + Retry 重试 | ⭐⭐ |
+| 15 | [15_async.py](examples/15_async.py) | 异步并发——同时发多个请求，3 倍提速 | ⭐⭐ |
+
+### 组合篇
+
+| 编号 | 文件 | 学什么 | 难度 |
+|------|------|--------|------|
+| 16 | [16_langsmith.py](examples/16_langsmith.py) | LangSmith——官方可观测性平台（了解即可） | ⭐ |
+| 17 | [17_callback_persist.py](examples/17_callback_persist.py) | 自建调用记录——Callback + SQLite 持久化 | ⭐⭐ |
+| 18 | [18_conversational_rag.py](examples/18_conversational_rag.py) | 对话式 RAG——知识库问答 + 多轮追问 | ⭐⭐⭐ |
+| 19 | [19_bind_tools.py](examples/19_bind_tools.py) | 直接工具调用——不用 Agent，自己控制流程 | ⭐⭐⭐ |
+| 20 | [20_multi_agent.py](examples/20_multi_agent.py) | 多 Agent 协作——研究员+写手+标题师流水线 | ⭐⭐⭐ |
+| 21 | [21_semantic_cache.py](examples/21_semantic_cache.py) | 语义缓存——相似问题不重复调 LLM | ⭐⭐ |
 
 ## 核心概念速查
 
@@ -77,7 +98,14 @@ python3 01_hello_world.py
 │  07 Structured     LLM 输出 → Pydantic 对象        │
 │  08 Streaming      逐 token 实时输出               │
 │  09 Loader         读 PDF / 网页 / 文件            │
-│  10 SQL            自然语言 → SQL → 查询结果       │
+│  10 SQL Agent      自然语言 → SQL → 查询结果       │
+│  11 SQL DDL        手写 DDL → 生成 SQL             │
+│                                                    │
+│ 技巧：                                            │
+│  12 Few-shot       给范例 → 模仿输出               │
+│  13 Callback       监控 Token / 费用 / 耗时        │
+│  14 Fallback       降级 + 重试 → 更扛造           │
+│  15 Async          ainvoke → 并行 → 3 倍快        │
 └──────────────────────────────────────────────────┘
 ```
 

@@ -64,12 +64,40 @@ print()
 # 第 3 步：加载 PDF 文件
 # ────────────────────────────────────────
 # PyPDFLoader 加载 PDF，每页转成一个 Document
+# ⚠️ 重要：PyPDFLoader 只提取文字，图片里的内容会被忽略！
 from langchain_community.document_loaders import PyPDFLoader
 
 # 创建一个模拟 PDF 来演示（实际只需 PyPDFLoader(path).load()）
 print("【PDF 加载】")
 print("  实际用法: PyPDFLoader('/path/doc.pdf').load()")
 print("  每页 PDF 变成一个 Document，metadata 包含页码")
+print()
+
+# ────────────────────────────────────────
+# 补充知识：图片多的 PDF 怎么处理？
+# ────────────────────────────────────────
+# PyPDFLoader 对图片无能为力。图片多的 PDF 有三种方案：
+#
+# 方案1：OCR（光学字符识别）
+#   pip install pytesseract pdf2image
+#   先把 PDF 每页转成图片，再用 OCR 提取文字
+#   缺点：慢，且对复杂排版效果一般
+#
+# 方案2：多模态 LLM（推荐）
+#   用 GPT-4o / Claude 等"能看图"的模型直接"读"PDF图片
+#   伪代码：
+#     image = pdf_page_to_image(page)
+#     text = vision_llm.invoke([image, "请描述图片内容"])
+#
+# 方案3：Unstructured 库（功能最强）
+#   pip install "unstructured[pdf]"
+#   from langchain_community.document_loaders import UnstructuredPDFLoader
+#   loader = UnstructuredPDFLoader("doc.pdf")
+#   自动处理文字+图片+表格，但需要额外安装依赖
+print("【图片PDF处理方案】")
+print("  文字为主 → PyPDFLoader 够用")
+print("  图文混排 → UnstructuredPDFLoader（需安装 unstructured）")
+print("  图片为主 → 多模态 LLM + pdf2image 直接'看图'")
 print()
 
 # ────────────────────────────────────────
